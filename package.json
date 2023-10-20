@@ -1,0 +1,126 @@
+{
+	"name": "envwiz",
+	"version": "0.0.0-development",
+	"private": false,
+	"description": "Manage your TypeScript environment variables with ease.",
+	"main": "dist/bin.js",
+	"bin": "dist/bin.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist/**",
+		"package.json"
+	],
+	"scripts": {
+		"prepare": "is-ci || husky install",
+		"lint": "tsc && eslint --ext ts .",
+		"build": "tsup",
+		"semantic-release": "semantic-release"
+	},
+	"keywords": [
+		"env",
+		"environment variables",
+		"id encoder"
+	],
+	"author": "Edoardo Ranghieri",
+	"license": "MIT",
+	"engines": {
+		"node": ">=18"
+	},
+	"devDependencies": {
+		"@commitlint/cli": "^17.8.0",
+		"@commitlint/config-conventional": "^17.8.0",
+		"@types/node": "^20.8.6",
+		"@types/prompts": "^2.4.7",
+		"@typescript-eslint/eslint-plugin": "^6.8.0",
+		"@typescript-eslint/parser": "^6.8.0",
+		"commander": "^11.1.0",
+		"cz-conventional-changelog": "^3.3.0",
+		"dotenv": "^16.3.1",
+		"eslint": "^8.51.0",
+		"eslint-config-prettier": "^9.0.0",
+		"husky": "^8.0.3",
+		"is-ci": "^3.0.1",
+		"picocolors": "^1.0.0",
+		"prettier": "^3.0.3",
+		"prompts": "^2.4.2",
+		"semantic-release": "^22.0.5",
+		"tsup": "^7.2.0",
+		"typescript": "^5.2.2"
+	},
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-conventional-changelog"
+		}
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/TheEdoRan/envwiz.git"
+	},
+	"release": {
+		"branches": [
+			{
+				"name": "main"
+			},
+			{
+				"name": "alpha",
+				"channel": "alpha",
+				"prerelease": true
+			},
+			{
+				"name": "beta",
+				"channel": "beta",
+				"prerelease": true
+			}
+		],
+		"plugins": [
+			[
+				"@semantic-release/commit-analyzer",
+				{
+					"preset": "angular",
+					"releaseRules": [
+						{
+							"breaking": true,
+							"release": "major"
+						},
+						{
+							"revert": true,
+							"release": "patch"
+						},
+						{
+							"type": "feat",
+							"release": "minor"
+						},
+						{
+							"type": "chore",
+							"release": "patch"
+						},
+						{
+							"type": "fix",
+							"release": "patch"
+						},
+						{
+							"type": "perf",
+							"release": "patch"
+						},
+						{
+							"type": "docs",
+							"scope": "readme",
+							"release": "patch"
+						},
+						{
+							"type": "refactor",
+							"release": "patch"
+						},
+						{
+							"scope": "no-release",
+							"release": false
+						}
+					]
+				}
+			],
+			"@semantic-release/release-notes-generator",
+			"@semantic-release/npm",
+			"@semantic-release/github"
+		]
+	}
+}
