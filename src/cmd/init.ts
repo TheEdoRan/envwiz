@@ -77,7 +77,7 @@ export async function createEnvFiles(filesFound: EnvFile[]) {
 				const tsconfig = ts.readConfigFile(join(CWD, "tsconfig.json"), ts.sys.readFile).config;
 
 				if (!tsconfig.include?.includes("env.d.ts")) {
-					tsconfig.include = [...tsconfig.include, "env.d.ts"];
+					tsconfig.include = [...(tsconfig.include || []), "env.d.ts"];
 					writeFileSync(join(CWD, "tsconfig.json"), JSON.stringify(tsconfig, null, 2));
 					console.log(pc.green("Added env.d.ts to tsconfig.json `include` array."));
 				}
