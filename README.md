@@ -13,7 +13,6 @@ Commands:
   init            Create required environment files
   add [options]   Add a new environment variable
   remove          Remove environment variables
+  sync            Sync environment variables from .env to other files
   help [command]  display help for command
 ```
-
-wip
