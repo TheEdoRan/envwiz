@@ -21,7 +21,7 @@ function run() {
 	program
 		.name("envwiz")
 		.description("Manage your TypeScript environment variables with ease.")
-		.version("1.0.0");
+		.version("1.0.1");
 
 	program
 		.command("init")
@@ -53,6 +53,16 @@ function run() {
 			const envsToRemove = await askEnvironmentVariablesToRemove(envs);
 			const filteredEnvs = getFilteredEnvironmentVariables(envs, envsToRemove);
 			removeEnvironmentVariables(filteredEnvs);
+		});
+
+	program
+		.command("sync")
+		.description("Sync environment variables from .env to other files")
+		.action(async () => {
+			assertRequiredFilesExist();
+			const envs = getParsedEnvs();
+			await askToSyncEnvironmentVariables();
+			syncEnvironmentVariables(envs);
 		});
 
 	program.parse();

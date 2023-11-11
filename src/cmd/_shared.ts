@@ -31,14 +31,14 @@ export function getParsedEnvs() {
 		}
 		return envs as Record<string, string>;
 	} catch {
-		console.error(pc.red("Could not parse .env file."));
+		logError("Could not parse .env file.");
 		process.exit(1);
 	}
 }
 
 export function writeEnvironmentVariablesToFiles(
 	envs: Record<string, string>,
-	action: "add" | "remove"
+	action: "add" | "remove" | "sync"
 ) {
 	const entries = Object.entries(envs);
 	let content = "";
@@ -60,14 +60,26 @@ export function writeEnvironmentVariablesToFiles(
 		}
 
 		try {
+			// We don't have to process .env file if we're syncing its content
+			// to other files.
+			if (action === "sync" && file === ".env") {
+				continue;
+			}
+
 			writeFileSync(join(CWD, file), content);
-			if (action === "add") {
-				console.log(pc.green(`Entry added to ${file} file.`));
-			} else {
-				console.log(pc.green(`Entries removed from ${file} file.`));
+
+			switch (action) {
+				case "add":
+					logSuccess(`Entry added to ${file} file.`);
+					break;
+				case "remove":
+					logSuccess(`Entries removed from ${file} file.`);
+					break;
+				case "sync":
+					logSuccess(`Entries synced to ${file} file.`);
 			}
 		} catch {
-			console.error(pc.red(`Could not write to ${file} file.`));
+			logError(`Could not write to ${file} file.`);
 			process.exit(1);
 		}
 	}
