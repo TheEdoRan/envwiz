@@ -14,6 +14,7 @@ import {
 	getFilteredEnvironmentVariables,
 	removeEnvironmentVariables,
 } from "./cmd/remove";
+import { askToSyncEnvironmentVariables, syncEnvironmentVariables } from "./cmd/sync";
 
 function run() {
 	const program = new Command();

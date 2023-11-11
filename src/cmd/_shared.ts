@@ -1,8 +1,7 @@
 import dotenv from "dotenv";
 import { readFileSync, readdirSync, writeFileSync } from "fs";
 import { join } from "path";
-import pc from "picocolors";
-import { CWD, ENV_FILES } from "../utils";
+import { CWD, ENV_FILES, logError, logSuccess } from "../utils";
 
 export const newDeclarationFileBody = `declare namespace NodeJS {\n\tinterface ProcessEnv {}\n}\n`;
 export function buildDeclarationFileContent(entries: [string, string][]) {
@@ -16,7 +15,7 @@ ${entries.map(([key]) => `\t\t${key}: string;`).join("\n")}
 export function assertRequiredFilesExist() {
 	const files = readdirSync(CWD);
 	if (!ENV_FILES.every((file) => files.includes(file as any))) {
-		console.error("Not all required files are present.");
+		logError("Not all required files are present.");
 		console.error("Please run `npx envwiz init` first.");
 		process.exit(1);
 	}

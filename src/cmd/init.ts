@@ -4,7 +4,7 @@ import { join } from "path";
 import pc from "picocolors";
 import prompts from "prompts";
 import ts from "typescript";
-import { CWD, ENV_FILES, type EnvFile } from "../utils";
+import { CWD, ENV_FILES, logError, logSuccess, type EnvFile } from "../utils";
 import { newDeclarationFileBody } from "./_shared";
 
 export function assertNPMInstalled() {
@@ -79,10 +79,10 @@ export async function createEnvFiles(filesFound: EnvFile[]) {
 				if (!tsconfig.include?.includes("env.d.ts")) {
 					tsconfig.include = [...(tsconfig.include || []), "env.d.ts"];
 					writeFileSync(join(CWD, "tsconfig.json"), JSON.stringify(tsconfig, null, 2));
-					console.log(pc.green("Added env.d.ts to tsconfig.json `include` array."));
+					logSuccess("Added env.d.ts to tsconfig.json `include` array.");
 				}
 			} catch {
-				console.error(pc.red("Could not open and/or edit tsconfig.json file."));
+				logError("Could not open and/or edit tsconfig.json file.");
 				console.error("Please add this entry to the `include` array in tsconfig.json:");
 				console.error(`["env.d.ts"]`);
 			}
@@ -90,9 +90,9 @@ export async function createEnvFiles(filesFound: EnvFile[]) {
 
 		try {
 			writeFileSync(join(CWD, file), body);
-			console.log(pc.green(`Created ${file} file.`));
+			logSuccess(`Created ${file} file.`);
 		} catch (e) {
-			console.error(pc.red(`Could not create ${file} file: ${e}`));
+			logError(`Could not create ${file} file: ${e}`);
 			process.exit(1);
 		}
 	});

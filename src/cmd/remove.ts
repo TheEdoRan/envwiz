@@ -1,10 +1,10 @@
-import pc from "picocolors";
 import prompts from "prompts";
+import { logError } from "../utils";
 import { writeEnvironmentVariablesToFiles } from "./_shared";
 
 export async function askEnvironmentVariablesToRemove(envs: Record<string, string>) {
 	if (!Object.keys(envs).length) {
-		console.error(pc.red("No environment variables found."));
+		logError("No environment variables found.");
 		process.exit(1);
 	}
 

@@ -1,6 +1,5 @@
-import pc from "picocolors";
 import prompts from "prompts";
-import { stringToUpperSnakeCase } from "../utils";
+import { logError, stringToUpperSnakeCase } from "../utils";
 import { writeEnvironmentVariablesToFiles } from "./_shared";
 
 export async function askEnvironmentVariableInfos(clear?: boolean) {
@@ -32,7 +31,7 @@ export function addEnvironmentVariable(
 	{ name, value }: { name: string; value: string }
 ) {
 	if (Object.keys(currentEnvs).includes(name)) {
-		console.error(pc.red(`Environment variable ${name} already exists.`));
+		logError(`Environment variable ${name} already exists.`);
 		process.exit(1);
 	}
 
