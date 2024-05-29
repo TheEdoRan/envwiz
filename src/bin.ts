@@ -4,10 +4,11 @@ import { Command } from "commander";
 import { assertRequiredFilesExist, getParsedEnvs } from "./cmd/_shared";
 import { addEnvironmentVariable, askEnvironmentVariableInfos } from "./cmd/add";
 import {
-	assertTypescriptInstalled,
+	assertSupportedLockFile,
+	assertTsconfigExists,
 	createEnvFiles,
-	detectPackageManager,
-	getExistingFiles,
+	getExistingEnvFiles,
+	readDirFiles,
 } from "./cmd/init";
 import {
 	askEnvironmentVariablesToRemove,
@@ -28,9 +29,10 @@ function run() {
 		.command("init")
 		.description("Create required environment files")
 		.action(async () => {
-			const pm = detectPackageManager();
-			assertTypescriptInstalled(pm);
-			const filesFound = getExistingFiles();
+			const dirFiles = readDirFiles();
+			assertSupportedLockFile(dirFiles);
+			assertTsconfigExists(dirFiles);
+			const filesFound = getExistingEnvFiles(dirFiles);
 			await createEnvFiles(filesFound);
 		});
 

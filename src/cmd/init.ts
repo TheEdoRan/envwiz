@@ -1,4 +1,3 @@
-import { execSync } from "child_process";
 import { readdirSync, writeFileSync } from "fs";
 import { join } from "path";
 import pc from "picocolors";
@@ -7,65 +6,31 @@ import ts from "typescript";
 import { CWD, ENV_FILES, logError, logSuccess, type EnvFile } from "../utils";
 import { newDeclarationFileBody } from "./_shared";
 
-const supportedPackageManagers = [
-	{
-		name: "npm",
-		lockfile: "package-lock.json",
-	},
-	{
-		name: "pnpm",
-		lockfile: "pnpm-lock.yaml",
-	},
-] as const;
+const supportedLockFiles = ["package-lock.json", "pnpm-lock.yaml", "yarn.lock"];
 
-type PackageManager = (typeof supportedPackageManagers)[number]["name"];
-
-export function detectPackageManager() {
+export function readDirFiles() {
 	const files = readdirSync(CWD);
-	const lockfileIdx = supportedPackageManagers.findIndex((pm) => files.includes(pm.lockfile));
+	return files;
+}
 
-	if (lockfileIdx < 0) {
+export function assertSupportedLockFile(dirFiles: string[]) {
+	if (!dirFiles.some((f) => supportedLockFiles.includes(f))) {
 		console.error(
-			"Could not find a supported package manager. Please install one of the following: npm, pnpm"
+			"Could not file supported lock file in current dir! Supported package managers: npm, pnpm, yarn"
 		);
 		process.exit(1);
 	}
-
-	return supportedPackageManagers[lockfileIdx]!.name;
 }
 
-export function assertTypescriptInstalled(packageManager: PackageManager) {
-	try {
-		// Local check.
-		if (packageManager === "npm") {
-			execSync("npm list typescript", { stdio: "ignore" });
-		} else if (packageManager === "pnpm") {
-			const res = execSync("pnpm list typescript", { stdio: "pipe" }).toString("utf-8");
-			if (!res) {
-				throw new Error("Local TypeScript not detected with pnpm");
-			}
-		}
-	} catch {
-		try {
-			// Global check.
-			if (packageManager === "npm") {
-				execSync("npm list -g typescript", { stdio: "ignore" });
-			} else if (packageManager === "pnpm") {
-				const res = execSync("pnpm list -g typescript", { stdio: "pipe" }).toString("utf-8");
-				if (!res) {
-					throw new Error("Global TypeScript not detected with pnpm");
-				}
-			}
-		} catch {
-			console.error("Could not detect TypeScript installation!");
-			process.exit(1);
-		}
+export function assertTsconfigExists(dirFiles: string[]) {
+	if (!dirFiles.includes("tsconfig.json")) {
+		console.error("Could not find tsconfig.json in current dir!");
+		process.exit(1);
 	}
 }
 
-export function getExistingFiles() {
-	const files = readdirSync(CWD);
-	return files.filter((file) => (ENV_FILES as unknown as string[]).includes(file)) as EnvFile[];
+export function getExistingEnvFiles(dirFiles: string[]) {
+	return dirFiles.filter((file) => (ENV_FILES as unknown as string[]).includes(file)) as EnvFile[];
 }
 
 export async function createEnvFiles(filesFound: EnvFile[]) {
