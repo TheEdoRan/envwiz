@@ -11,7 +11,7 @@
 		"package.json"
 	],
 	"scripts": {
-		"prepare": "is-ci || husky install",
+		"prepare": "is-ci || husky",
 		"lint": "tsc && eslint --ext ts .",
 		"build": "tsup",
 		"semantic-release": "semantic-release"
@@ -27,25 +27,25 @@
 		"node": ">=18"
 	},
 	"devDependencies": {
-		"@commitlint/cli": "^17.8.0",
-		"@commitlint/config-conventional": "^17.8.0",
-		"@types/node": "^20.8.6",
-		"@types/prompts": "^2.4.7",
-		"@typescript-eslint/eslint-plugin": "^6.8.0",
-		"@typescript-eslint/parser": "^6.8.0",
-		"commander": "^11.1.0",
+		"@commitlint/cli": "^19.3.0",
+		"@commitlint/config-conventional": "^19.2.2",
+		"@eslint/js": "^9.1.1",
+		"@types/node": "^20.12.12",
+		"@types/prompts": "^2.4.9",
+		"commander": "^12.1.0",
 		"cz-conventional-changelog": "^3.3.0",
-		"dotenv": "^16.3.1",
-		"eslint": "^8.51.0",
-		"eslint-config-prettier": "^9.0.0",
-		"husky": "^8.0.3",
+		"dotenv": "^16.4.5",
+		"eslint": "^8.57.0",
+		"eslint-config-prettier": "^9.1.0",
+		"husky": "^9.0.11",
 		"is-ci": "^3.0.1",
-		"picocolors": "^1.0.0",
-		"prettier": "^3.0.3",
+		"picocolors": "^1.0.1",
+		"prettier": "^3.2.5",
 		"prompts": "^2.4.2",
-		"semantic-release": "^22.0.5",
-		"tsup": "^7.2.0",
-		"typescript": "^5.2.2"
+		"semantic-release": "^23.1.1",
+		"tsup": "^8.0.2",
+		"typescript": "^5.4.5",
+		"typescript-eslint": "^7.7.1"
 	},
 	"config": {
 		"commitizen": {
@@ -55,5 +55,8 @@
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/TheEdoRan/envwiz.git"
+	},
+	"dependencies": {
+		"commitizen": "^4.3.0"
 	}
 }
