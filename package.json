@@ -12,9 +12,9 @@
 	],
 	"scripts": {
 		"prepare": "is-ci || husky",
-		"lint": "tsc && eslint --ext ts .",
+		"lint": "tsc && prettier --write . && eslint .",
 		"build": "tsup",
-		"semantic-release": "semantic-release"
+		"deploy": "semantic-release"
 	},
 	"keywords": [
 		"env",
