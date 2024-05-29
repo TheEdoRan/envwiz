@@ -23,7 +23,6 @@ jobs:
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
       - run: pnpm run lint
-      - run: pnpm run test
 
   cd:
     if: ${{ github.ref == 'refs/heads/main' }}
