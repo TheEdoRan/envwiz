@@ -38,7 +38,7 @@ function run() {
 		.command("add")
 		.description("Add a new environment variable")
 		.option("-c, --clear", "Don't hide the environment variable value")
-		.action(async (opts) => {
+		.action(async (opts?: { clear?: boolean }) => {
 			assertRequiredFilesExist();
 			const envs = getParsedEnvs();
 			const { name, value } = await askEnvironmentVariableInfos(opts?.clear);

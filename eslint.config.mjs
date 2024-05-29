@@ -22,6 +22,10 @@ export default tseslint.config(
 		rules: {
 			"@typescript-eslint/consistent-type-imports": "error",
 			"@typescript-eslint/consistent-type-exports": "error",
+			"@typescript-eslint/no-unsafe-assignment": "off",
+			"@typescript-eslint/no-unsafe-call": "off",
+			"@typescript-eslint/no-unsafe-member-access": "off",
+			"@typescript-eslint/unbound-method": "off",
 		},
 	},
 	prettierConfig

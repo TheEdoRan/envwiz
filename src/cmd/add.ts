@@ -8,14 +8,14 @@ export async function askEnvironmentVariableInfos(clear?: boolean) {
 			type: "text",
 			name: "name",
 			message: "Environment variable name:",
-			validate: (value) => value.length > 0,
+			validate: (value: string) => value.length > 0,
 			format: stringToUpperSnakeCase,
 		},
 		{
 			type: clear ? "text" : "password",
 			name: "value",
 			message: (prev) => `${prev} value:`,
-			validate: (value) => value.length > 0,
+			validate: (value: string) => value.length > 0,
 		},
 	])) as { name: string | undefined; value: string | undefined };
 

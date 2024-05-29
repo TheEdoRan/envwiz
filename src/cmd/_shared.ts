@@ -14,7 +14,7 @@ ${entries.map(([key]) => `\t\t${key}: string;`).join("\n")}
 
 export function assertRequiredFilesExist() {
 	const files = readdirSync(CWD);
-	if (!ENV_FILES.every((file) => files.includes(file as any))) {
+	if (!ENV_FILES.every((file) => files.includes(file))) {
 		logError("Not all required files are present.");
 		console.error("Please run `npx envwiz init` first.");
 		process.exit(1);

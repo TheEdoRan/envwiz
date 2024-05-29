@@ -31,7 +31,7 @@ export function detectPackageManager() {
 		process.exit(1);
 	}
 
-	return supportedPackageManagers[lockfileIdx]!.name as PackageManager;
+	return supportedPackageManagers[lockfileIdx]!.name;
 }
 
 export function assertTypescriptInstalled(packageManager: PackageManager) {
@@ -65,7 +65,7 @@ export function assertTypescriptInstalled(packageManager: PackageManager) {
 
 export function getExistingFiles() {
 	const files = readdirSync(CWD);
-	return files.filter((file) => ENV_FILES.includes(file as any)) as EnvFile[];
+	return files.filter((file) => (ENV_FILES as unknown as string[]).includes(file)) as EnvFile[];
 }
 
 export async function createEnvFiles(filesFound: EnvFile[]) {
