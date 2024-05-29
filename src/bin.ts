@@ -4,9 +4,9 @@ import { Command } from "commander";
 import { assertRequiredFilesExist, getParsedEnvs } from "./cmd/_shared";
 import { addEnvironmentVariable, askEnvironmentVariableInfos } from "./cmd/add";
 import {
-	assertNPMInstalled,
 	assertTypescriptInstalled,
 	createEnvFiles,
+	detectPackageManager,
 	getExistingFiles,
 } from "./cmd/init";
 import {
@@ -28,8 +28,8 @@ function run() {
 		.command("init")
 		.description("Create required environment files")
 		.action(async () => {
-			assertNPMInstalled();
-			assertTypescriptInstalled();
+			const pm = detectPackageManager();
+			assertTypescriptInstalled(pm);
 			const filesFound = getExistingFiles();
 			await createEnvFiles(filesFound);
 		});

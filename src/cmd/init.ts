@@ -7,25 +7,57 @@ import ts from "typescript";
 import { CWD, ENV_FILES, logError, logSuccess, type EnvFile } from "../utils";
 import { newDeclarationFileBody } from "./_shared";
 
-export function assertNPMInstalled() {
-	try {
-		execSync("npm -v", { stdio: "ignore" });
-	} catch {
-		console.error("npm is not installed!");
+const supportedPackageManagers = [
+	{
+		name: "npm",
+		lockfile: "package-lock.json",
+	},
+	{
+		name: "pnpm",
+		lockfile: "pnpm-lock.yaml",
+	},
+] as const;
+
+type PackageManager = (typeof supportedPackageManagers)[number]["name"];
+
+export function detectPackageManager() {
+	const files = readdirSync(CWD);
+	const lockfileIdx = supportedPackageManagers.findIndex((pm) => files.includes(pm.lockfile));
+
+	if (lockfileIdx < 0) {
+		console.error(
+			"Could not find a supported package manager. Please install one of the following: npm, pnpm"
+		);
 		process.exit(1);
 	}
+
+	return supportedPackageManagers[lockfileIdx]!.name as PackageManager;
 }
 
-export function assertTypescriptInstalled() {
+export function assertTypescriptInstalled(packageManager: PackageManager) {
 	try {
 		// Local check.
-		execSync("npm list typescript", { stdio: "ignore" });
+		if (packageManager === "npm") {
+			execSync("npm list typescript", { stdio: "ignore" });
+		} else if (packageManager === "pnpm") {
+			const res = execSync("pnpm list typescript", { stdio: "pipe" }).toString("utf-8");
+			if (!res) {
+				throw new Error("Local TypeScript not detected with pnpm");
+			}
+		}
 	} catch {
 		try {
 			// Global check.
-			execSync("npm list -g typescript", { stdio: "ignore" });
+			if (packageManager === "npm") {
+				execSync("npm list -g typescript", { stdio: "ignore" });
+			} else if (packageManager === "pnpm") {
+				const res = execSync("pnpm list -g typescript", { stdio: "pipe" }).toString("utf-8");
+				if (!res) {
+					throw new Error("Global TypeScript not detected with pnpm");
+				}
+			}
 		} catch {
-			console.error("TypeScript is not installed!");
+			console.error("Could not detect TypeScript installation!");
 			process.exit(1);
 		}
 	}
