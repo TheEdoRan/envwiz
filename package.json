@@ -41,7 +41,7 @@
 		"picocolors": "^1.1.1",
 		"prettier": "^3.3.3",
 		"prompts": "^2.4.2",
-		"semantic-release": "^24.2.0",
+		"semantic-release": "^23",
 		"tsup": "^8.3.5",
 		"typescript": "^5.6.3",
 		"typescript-eslint": "^8.14.0",
@@ -55,9 +55,6 @@
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/TheEdoRan/envwiz.git"
-	},
-	"overrides": {
-		"conventional-changelog-conventionalcommits": ">= 8.0.0"
 	},
 	"packageManager": "pnpm@9.13.1+sha512.5ac37545851c55ec58521b6c285db6f848f93ca70889beb4145f5b40fe234e4ea4faee4dad12ac5c139e494374c65d9c3a6ec9a25954378fa286a250e68d2f20"
 }
